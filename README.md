@@ -1,0 +1,1 @@
+Testing how feasible is to use angular2 
