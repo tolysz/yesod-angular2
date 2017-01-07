@@ -1,0 +1,53 @@
+$newline never
+\<!doctype html>
+\<!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en"> <![endif]-->
+\<!--[if IE 7]>    <html class="no-js ie7 oldie" lang="en"> <![endif]-->
+\<!--[if IE 8]>    <html class="no-js ie8 oldie" lang="en"> <![endif]-->
+\<!--[if gt IE 8]><!-->
+<html class="no-js" lang="en"> <!--<![endif]-->
+  <head>
+    <meta charset="UTF-8">
+
+    <title>#{pageTitle pc}
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    ^{pageHead pc}
+
+    \<!--[if lt IE 9]>
+    \<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    \<![endif]-->
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/hammerjs/2.0.8/hammer.min.js">
+    <script type="text/javascript" src="https://unpkg.com/core-js/client/shim.min.js">
+    <script type="text/javascript" src="https://unpkg.com/zone.js/dist/zone.js">
+    <script type="text/javascript" src="https://unpkg.com/reflect-metadata/Reflect.js">
+    <script type="text/javascript" src="https://unpkg.com/rxjs/bundles/Rx.js">
+    <script type="text/javascript" src="https://unpkg.com/@angular/core/bundles/core.umd.js">
+    <script type="text/javascript" src="https://unpkg.com/@angular/common/bundles/common.umd.js">
+    <script type="text/javascript" src="https://unpkg.com/@angular/compiler/bundles/compiler.umd.js">
+    <script type="text/javascript" src="https://unpkg.com/@angular/http/bundles/http.umd.js">
+    <script type="text/javascript" src="https://unpkg.com/@angular/forms/bundles/forms.umd.js">
+    <script type="text/javascript" src="https://unpkg.com/@angular/platform-browser/bundles/platform-browser.umd.js">
+    <script type="text/javascript" src="https://unpkg.com/@angular/platform-browser-dynamic/bundles/platform-browser-dynamic.umd.js">
+    <script type="text/javascript" src="https://unpkg.com/@angular/router/bundles/router.umd.js">
+    <script type="text/javascript" src="https://rawgit.com/angular/material2-builds/master/bundles/material.umd.js">
+    <script type="text/javascript" src="https://unpkg.com/@angular/flex-layout/bundles/flex-layout.umd.js">
+
+    <link href="https://rawgit.com/angular/material2-builds/master/core/theming/prebuilt/indigo-pink.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+  <body>
+    ^{pageBody pc}
+
+    $maybe analytics <- appAnalytics $ appSettings master
+      <script>
+        if(!window.location.href.match(/localhost/)){
+          window._gaq = [['_setAccount','#{analytics}'],['_trackPageview'],['_trackPageLoadTime']];
+          (function() {
+          \  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+          \  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+          \  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+          })();
+        }
