@@ -14,6 +14,10 @@ module Yesod.Angular2.DSL
  , addModule
  , run
  , bla
+ , ngSelector
+ , ngTemplate
+ , ngStyles
+ , ngClay
  , js
  , demo
  , Decorator(..)
@@ -21,6 +25,7 @@ module Yesod.Angular2.DSL
 where
 
 import Data.String
+import qualified Clay
 import Data.Monoid
 import Data.Map.Strict as Map
 import Data.String.QM
@@ -110,3 +115,15 @@ demo = run $ do
        "ola" @= "{}"
        bla
        "ngOnInit" @-> [js|function() {setTimeout(() => this.name = 'Windstorm', 0);}|]
+
+ngSelector :: TL.Text -> GJSClass url ()
+ngSelector s = "selector" @@~ s
+
+ngTemplate :: TL.Text -> GJSClass url ()
+ngTemplate t = "template" @@~ t
+
+ngStyles :: TL.Text -> GJSClass url ()
+ngStyles t = "styles" @@~~ t
+
+ngClay :: Clay.Css -> GJSClass url ()
+ngClay = ("styles" @@~~) . Clay.render

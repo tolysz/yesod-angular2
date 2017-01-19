@@ -4,7 +4,6 @@
 module Handler.Home where
 
 import Import
-import Yesod.Form.Bootstrap3 (BootstrapFormLayout (..), renderBootstrap3)
 import Text.Julius (RawJS (..))
 import Yesod.Angular2.DSL
 import Text.Hamlet
@@ -145,7 +144,7 @@ componentInputDemoCSS = [lucius|
 }
 |]
 
-rawForm :: Text
+-- rawForm :: Text
 rawForm = [qq|
 <form class="example-form">
   <md-input-container class="example-full-width">
@@ -213,6 +212,10 @@ demoApp = do
         )
       "selector" @@~ ("main-app" :: Text)
       "template" @@~ (renderHtml [shamlet|
+$#      <menu-icons-example>
+$#      <sidenav-fab-example>
+      <toolbar-multirow-example>
+        Loading menu...
 $#         <my-zippy title="form">
 $#           <input-form-example> Loading ...
 $#         <my-zippy>
@@ -220,7 +223,7 @@ $#           <radio-ng-model-example> Loading ...
 $#         <my-zippy>
 $#           <select-form-example> Loading ...
 $#         <my-zippy>
-           <slider-configurable-example> Loading ...
+$#           <slider-configurable-example> Loading ...
 $#         <my-zippy>
 $#           <div class="example-tooltip-host" mdTooltip="Tooltip!" [mdTooltipPosition]="position">
 $#             <span>Show tooltip
@@ -235,37 +238,36 @@ $#               <md-option value="right">Right
 
 inputFormExample = do
     jsClass "InputFormExample" $ do
-      "selector" @@~ ("input-form-example" :: Text)
-      "template" @@~ rawForm
+      ngSelector "input-form-example" 
+      ngTemplate rawForm
 --       "template" @@~ renderHtml componentInputDemo
-      "styles"    @@~~ ([qq|
+      ngStyles [qq|
 .example-form {
   width: 500px;
 }
 .example-full-width {
   width: 100%;
 }
-|] :: Text)
+|]
 radioNgModelExample = do
     addModule "ng.forms.FormsModule"
     jsClass "RadioNgModelExample" $ do
       "input" @@~ ([qtl|[favoriteSeason]|] :: Text)
-      "selector" @@~ ("radio-ng-model-example" :: Text)
-      "template" @@~ (renderHtml [shamlet|
+      ngSelector "radio-ng-model-example"
+      ngTemplate (renderHtml [shamlet|
 <md-radio-group class="example-radio-group" [(ngModel)]="favoriteSeason">
   <md-radio-button class="example-radio-button" template="ngFor: let season of seasons" [value]="season">
     {{season}}
 <div class="example-selected-value">Your favorite season is: {{favoriteSeason}}
       |])
-      "styles"    @@~~ Clay.render (do
-      ".example-radio-group" & do
-          display inlineFlex
-          flexDirection column
-      ".example-radio-button" &
-          margin (px 5) (px 5) (px 5) (px 5)
-      ".example-selected-value" &
-          margin (px 15) 0 (px 15) 0
-      )
+      ngClay $ do
+        ".example-radio-group" & do
+            display inlineFlex
+            flexDirection column
+        ".example-radio-button" &
+            margin (px 5) (px 5) (px 5) (px 5)
+        ".example-selected-value" &
+            margin (px 15) 0 (px 15) 0
       "favoriteSeason" @= "null"
       "seasons" @= [qq|[
        'Winter',
@@ -276,8 +278,8 @@ radioNgModelExample = do
 selectFormExample = do
     addModule "ng.forms.FormsModule"
     jsClass "SelectFormExample" $ do
-       "selector" @@~ ("select-form-example" :: Text)
-       "template" @@~ ([qq|
+       ngSelector "select-form-example"
+       ngTemplate [qq|
 <form>
   <md-select placeholder="Favorite food" [(ngModel)]="selectedValue" name="food">
     <md-option *ngFor="let food of foods" [value]="food.value">
@@ -287,7 +289,7 @@ selectFormExample = do
 
   <p> Selected value: {{selectedValue}} </p>
 </form>
-       |] :: Text)
+       |]
        "selectedValue" @= "null"
        "foods" @= [qq|[
     {value: 'steak-0', viewValue: 'Steak'},
@@ -296,32 +298,19 @@ selectFormExample = do
   ]|]
 sliderConfigurableExample = do
     jsClass "SliderConfigurableExample" $ do
-      "selector" @@~ ("slider-configurable-example" :: Text)
-      "styles"    @@~~ ([qq|
-.example-h2 {
-  margin: 10px;
-}
+      ngSelector "slider-configurable-example"
+      ngClay $ do
+        ".example-h2" & margin (px 10) (px 10) (px 10) (px 10)
+        ".example-section" & do
+           display flex
+           alignContent center
+           alignItems center
+           height (px 60)
+        ".example-margin" & margin (px 10) (px 10) (px 10) (px 10)
+        ".md-slider-horizontal" & width (px 300)
+        ".md-slider-vertical" & height  (px 300)
 
-.example-section {
-  display: flex;
-  align-content: center;
-  align-items: center;
-  height: 60px;
-}
-
-.example-margin {
-  margin: 10px;
-}
-
-.md-slider-horizontal {
-  width: 300px;
-}
-
-.md-slider-vertical {
-  height: 300px;
-}
-      |] :: Text)
-      "template" @@~ ([qq|
+      ngTemplate [qq|
 <md-card>
   <md-card-content>
     <h2 class="example-h2">Slider configuration</h2>
@@ -385,7 +374,7 @@ sliderConfigurableExample = do
     </md-slider>
   </md-card-content>
 </md-card>
-      |] :: Text)
+      |]
       "selectedValue" @= "null"
       "autoTicks" @= "false"
       "disabled" @= "false"
@@ -424,11 +413,126 @@ getCIR = defaultLayout $ do
 --     inputFormExample
 --     radioNgModelExample
 --     selectFormExample
-    sliderConfigurableExample
+--     sliderConfigurableExample
+--     menuIconsExample
+--     sidenavFabExample
+    toolbarMultirowExample
 --     myZippy
 --   toWidget $ run $ do
   toWidget [whamlet|
     <main-app> Loading...
+  |]
+
+toolbarMultirowExample =
+ jsClass "ToolbarMultirowExample" $ do
+ ngSelector "toolbar-multirow-example"
+ ngTemplate [qq|
+ <md-toolbar color="primary">
+   <span>Custom Toolbar</span>
+
+   <md-toolbar-row>
+     <span>Second Line</span>
+     <span class="example-spacer"></span>
+     <md-icon class="example-icon">verified_user</md-icon>
+   </md-toolbar-row>
+
+   <md-toolbar-row>
+     <span>Third Line</span>
+     <span class="example-spacer"></span>
+     <md-icon class="example-icon">favorite</md-icon>
+     <md-icon class="example-icon">delete</md-icon>
+   </md-toolbar-row>
+ </md-toolbar>
+ |]
+ ngClay $ do
+    ".example-icon" & padding 0 (px 14) 0 (px 14)
+--     ".example-spacer" & "flex" "1 1 auto"
+
+sidenavFabExample =
+ jsClass "MenuIconsExample" $ do
+ ngSelector "sidenav-fab-example"
+ ngTemplate [qq|
+<md-sidenav-container class="example-sidenav-fab-container">
+  <md-sidenav #sidenav mode="side" opened="true">
+    <button md-mini-fab class="example-fab" (click)="sidenav.toggle()">
+      <md-icon>add</md-icon>
+    </button>
+    <div class="example-scrolling-content">
+      Lorem ipsum dolor sit amet, pede a libero aenean phasellus, lectus metus sint ut risus,
+      fusce vel in pellentesque. Nisl rutrum etiam morbi consectetuer tempor magna, aenean nullam
+      nunc id, neque vivamus interdum sociis nulla scelerisque sem, dolor id wisi turpis magna
+      aliquam magna. Risus accumsan hac eget etiam donec sed, senectus erat mattis quam, tempor
+      vel urna occaecat cras, metus urna augue nec at. Et morbi amet dui praesent, nec eu at,
+      ligula ipsum dui sollicitudin, quis nisl massa viverra ligula, mauris fermentum orci arcu
+      enim fringilla. Arcu erat nulla in aenean lacinia ullamcorper, urna ante nam et sagittis,
+      tristique vehicula nibh ipsum vivamus, proin proin. Porta commodo nibh quis libero amet.
+      Taciti dui, sapien consectetuer.
+    </div>
+  </md-sidenav>
+  <button md-mini-fab class="example-fab" (click)="sidenav.toggle()">
+    <md-icon>add</md-icon>
+  </button>
+  <div class="example-scrolling-content">
+    Lorem ipsum dolor sit amet, pede a libero aenean phasellus, lectus metus sint ut risus, fusce
+    vel in pellentesque. Nisl rutrum etiam morbi consectetuer tempor magna, aenean nullam nunc id,
+    neque vivamus interdum sociis nulla scelerisque sem, dolor id wisi turpis magna aliquam magna.
+    Risus accumsan hac eget etiam donec sed, senectus erat mattis quam, tempor vel urna occaecat
+    cras, metus urna augue nec at. Et morbi amet dui praesent, nec eu at, ligula ipsum dui
+    sollicitudin, quis nisl massa viverra ligula, mauris fermentum orci arcu enim fringilla. Arcu
+    erat nulla in aenean lacinia ullamcorper, urna ante nam et sagittis, tristique vehicula nibh
+    ipsum vivamus, proin proin. Porta commodo nibh quis libero amet. Taciti dui, sapien
+    consectetuer.
+  </div>
+</md-sidenav-container>
+ |]
+ ngStyles [qq|
+.example-sidenav-fab-container {
+  width: 500px;
+  height: 300px;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+}
+
+.example-sidenav-fab-container md-sidenav {
+  max-width: 200px;
+}
+
+.example-sidenav-fab-container .md-sidenav-content,
+.example-sidenav-fab-container md-sidenav {
+  display: flex;
+  overflow: visible;
+}
+
+.example-scrolling-content {
+  overflow: auto;
+}
+
+.example-fab {
+  position: absolute;
+  right: 20px;
+  bottom: 10px;
+}
+ |]
+menuIconsExample = do
+  jsClass "MenuIconsExample" $ do
+  ngSelector "menu-icons-example"
+  ngTemplate [qq|
+<button md-icon-button [mdMenuTriggerFor]="menu">
+  <md-icon>more_vert</md-icon>
+</button>
+<md-menu #menu="mdMenu">
+  <button md-menu-item>
+    <md-icon>dialpad</md-icon>
+    <span>Redial</span>
+  </button>
+  <button md-menu-item disabled>
+    <md-icon>voicemail</md-icon>
+    <span>Check voicemail</span>
+  </button>
+  <button md-menu-item>
+    <md-icon>notifications_off</md-icon>
+    <span>Disable alerts</span>
+  </button>
+</md-menu>
   |]
 
 appComponent = do
@@ -455,8 +559,8 @@ appComponent = do
   { id: 19, name: 'Magma' },
   { id: 20, name: 'Tornado' }
 ]|]
-     "selector" @@~ ("my-app" :: Text)
-     "template" @@~ ([qq|
+     ngSelector "my-app"
+     ngTemplate [qq|
     <h1>{{title}}</h1>
     <h2>My Heroes</h2>
     <ul class="heroes">
@@ -474,9 +578,9 @@ appComponent = do
         <input [(ngModel)]="selectedHero.name" placeholder="name"/>
       </div>
     </div>
-     |] :: Text )
+     |]
 --      "encapsulation" @@= ("ng.core.ViewEncapsulation.Emulated" :: Text)
-     "styles" @@~~ ([qq|
+     ngStyles [qq|
     .selected {
       background-color: #CFD8DC !important;
       color: white;
@@ -524,7 +628,7 @@ appComponent = do
       margin-right: .8em;
       border-radius: 4px 0 0 4px;
     }
-|]:: Text)
+|]
 
 getHeroR = defaultLayout $ do
   setTitle "The Hero Editor"
@@ -650,13 +754,13 @@ nav a.active {
 
 myZippy = do
    jsClass "ZippyComponent" $ do
-      "selector" @@~ ("my-zippy" :: Text)
+      ngSelector "my-zippy"
       "input" @@= ([qq|["title"]|] :: Text)
       "name" @= [qq|""|]
       "toggle" @-> [js|function(){
           this.visible = !this.visible;
         }|]
-      "template" @@~ ([qq|
+      ngTemplate [qq|
       <div class="zippy">
         <div (click)="toggle()" class="zippy__title">
         ▾ Details
@@ -665,11 +769,8 @@ myZippy = do
           <ng-content></ng-content>
         </div>
       </div>
-      |] :: Text)
-      "styles"    @@~~ Clay.render (
-          ".zippy" &
-            background green
-          )
+      |]
+      ngClay $ ".zippy" & background green
 
 getSliderR = defaultLayout $ do
 

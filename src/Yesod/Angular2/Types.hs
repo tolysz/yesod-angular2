@@ -84,11 +84,11 @@ renderRoute :: Route url -> JavascriptUrl url
 renderRoute r@Route{..}= [js|{^{body}}|]
  where
   body = mintersperse "," $ mconcat
-      [ [[js|path = '#{rawJS (fromJust routePath)}'|]         | isJust routePath]
-      , [[js|component = ^{cName (fromJust routeComponent)}|] | isJust routeComponent]
-      , [[js|data = ^{fromJust routeData}|] | isJust routeData]
+      [ [[js|path = '#{rawJS (fromJust routePath)}'|]             | isJust routePath]
+      , [[js|component = ^{cName (fromJust routeComponent)}|]     | isJust routeComponent]
+      , [[js|data = ^{fromJust routeData}|]                       | isJust routeData]
       , [[js|redirectTo = '#{rawJS (fromJust routeRedirectTo)}'|] | isJust routeRedirectTo]
-      , [[js|pathMatch = '#{rawJS (fromJust routePathMatch)}'|] | isJust routePathMatch]
+      , [[js|pathMatch = '#{rawJS (fromJust routePathMatch)}'|]   | isJust routePathMatch]
       , [[js|children = [^((mintersperse "," $ map renderRoute $ DL.filter isNonNullRoute routeChildren))]|] | not (DL.null routeChildren)]
       ]
 

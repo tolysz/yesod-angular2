@@ -38,6 +38,7 @@ library
                , rawstring-qm
                , derive
                , data-lens
+               , clay
   default-language:    Haskell2010
   default-extensions:
               TemplateHaskell
