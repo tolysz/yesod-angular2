@@ -13,6 +13,8 @@ $newline never
     <meta name="author" content="">
 
     <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link href="https://rawgit.com/angular/material2-builds/master/core/theming/prebuilt/indigo-pink.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     ^{pageHead pc}
 
     \<!--[if lt IE 9]>
@@ -21,22 +23,20 @@ $newline never
 
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/hammerjs/2.0.8/hammer.min.js">
     <script type="text/javascript" src="https://unpkg.com/core-js/client/shim.min.js">
-    <script type="text/javascript" src="https://unpkg.com/zone.js/dist/zone.js">
+    <script type="text/javascript" src="https://unpkg.com/zone.js@0.7.4/dist/zone.js">
     <script type="text/javascript" src="https://unpkg.com/reflect-metadata/Reflect.js">
     <script type="text/javascript" src="https://unpkg.com/rxjs/bundles/Rx.js">
-    <script type="text/javascript" src="https://unpkg.com/@angular/core/bundles/core.umd.js">
-    <script type="text/javascript" src="https://unpkg.com/@angular/common/bundles/common.umd.js">
-    <script type="text/javascript" src="https://unpkg.com/@angular/compiler/bundles/compiler.umd.js">
-    <script type="text/javascript" src="https://unpkg.com/@angular/http/bundles/http.umd.js">
-    <script type="text/javascript" src="https://unpkg.com/@angular/forms/bundles/forms.umd.js">
-    <script type="text/javascript" src="https://unpkg.com/@angular/platform-browser/bundles/platform-browser.umd.js">
-    <script type="text/javascript" src="https://unpkg.com/@angular/platform-browser-dynamic/bundles/platform-browser-dynamic.umd.js">
-    <script type="text/javascript" src="https://unpkg.com/@angular/router/bundles/router.umd.js">
+    <script type="text/javascript" src="https://unpkg.com/@angular/core#{ngTag}/bundles/core.umd.js">
+    <script type="text/javascript" src="https://unpkg.com/@angular/common#{ngTag}/bundles/common.umd.js">
+    <script type="text/javascript" src="https://unpkg.com/@angular/compiler#{ngTag}/bundles/compiler.umd.js">
+    $# <script type="text/javascript" src="https://unpkg.com/@angular/compiler-cli#{ngTag}/bundles/compiler-cli.umd.js">
+    <script type="text/javascript" src="https://unpkg.com/@angular/http#{ngTag}/bundles/http.umd.js">
+    <script type="text/javascript" src="https://unpkg.com/@angular/forms#{ngTag}/bundles/forms.umd.js">
+    <script type="text/javascript" src="https://unpkg.com/@angular/platform-browser#{ngTag}/bundles/platform-browser.umd.js">
+    <script type="text/javascript" src="https://unpkg.com/@angular/platform-browser-dynamic#{ngTag}/bundles/platform-browser-dynamic.umd.js">
+    <script type="text/javascript" src="https://unpkg.com/@angular/router#{ngTag}/bundles/router.umd.js">
     <script type="text/javascript" src="https://rawgit.com/angular/material2-builds/master/bundles/material.umd.js">
     <script type="text/javascript" src="https://unpkg.com/@angular/flex-layout/bundles/flex-layout.umd.js">
-
-    <link href="https://rawgit.com/angular/material2-builds/master/core/theming/prebuilt/indigo-pink.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
   <body>
     ^{pageBody pc}

@@ -1,32 +1,27 @@
 packages:
 - '.'
 - '..'
+- '../../shakespeare'
+- location:
+    git: https://github.com/yesodweb/yesod
+    commit: 6d03e6beedf6d6adccace2adeffad1a09b1a46eb
+  subdirs:
+  - yesod-bin
+  extra-dep: true
+
 extra-deps:
 - rawstring-qm-0.2.3.0
 - data-lens-2.11.1
-- base-4.9.1.0
-- unix-2.7.2.1
+- typed-process-0.1.0.0
+- containers-0.5.9.1
+#- base-4.9.1.0
+#- unix-2.7.2.1
 
 flags: {}
 extra-package-dbs: []
 
-compiler: ghc-8.0.2
-compiler-check: match-exact
-resolver: lts-7.14
-setup-info:
-  ghc:
-    linux64:
-      8.0.2:
-        url: https://downloads.haskell.org/~ghc/8.0.2/ghc-8.0.2-x86_64-deb8-linux.tar.xz
-        content-length: 114373576
-        sha1: f298b7d0f37cc9ded7ac66b2662b0fa5ac6d0809
-    macosx:
-      8.0.2:
-        url: https://downloads.haskell.org/~ghc/8.0.2/ghc-8.0.2-x86_64-apple-darwin.tar.xz
-        content-length: 113945284
-        sha1: 5bfd2cef149bd2936cc56bb4b526cbc56a0e7f28
-    windows64:
-      8.0.2:
-        url: https://downloads.haskell.org/~ghc/8.0.2/ghc-8.0.2-x86_64-unknown-mingw32.tar.xz
-        content-length: 156817208
-        sha1: 18d8eadb52e86583c14019be53910e02dbe84f1d
+#compiler: ghc-8.0.2
+#compiler-check: match-exact
+
+resolver: lts-7.16
+

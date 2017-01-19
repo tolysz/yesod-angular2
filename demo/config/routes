@@ -3,6 +3,12 @@
 /favicon.ico FaviconR GET
 /robots.txt RobotsR GET
 
-/ HomeR GET POST
+/ HomeR GET
 
 /comments CommentR POST
+
+/component-input CIR GET
+/hero HeroR GET
+
+/slider SliderR GET
+

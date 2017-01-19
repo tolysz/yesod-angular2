@@ -24,6 +24,11 @@ import Network.Wai.Middleware.RequestLogger (Destination (Logger),
                                              IPAddrSource (..),
                                              OutputFormat (..), destination,
                                              mkRequestLogger, outputFormat)
+import           Network.Wai.Middleware.Autohead (autohead)
+import           Network.Wai.Middleware.AcceptOverride (acceptOverride)
+import           Network.Wai.Middleware.Gzip (GzipFiles(..), GzipSettings(..), gzip)
+import           Network.Wai.Middleware.MethodOverride (methodOverride)
+
 import System.Log.FastLogger                (defaultBufSize, newStdoutLoggerSet,
                                              toLogStr)
 
@@ -62,7 +67,10 @@ makeApplication foundation = do
     logWare <- makeLogWare foundation
     -- Create the WAI application and apply middlewares
     appPlain <- toWaiAppPlain foundation
-    return $ logWare $ defaultMiddlewaresNoLogging appPlain
+    return $ logWare $ defaultMiddlewaresNoLoggingCache appPlain
+
+defaultMiddlewaresNoLoggingCache :: Middleware
+defaultMiddlewaresNoLoggingCache = acceptOverride . autohead . gzip def{ gzipFiles = GzipPreCompressed GzipCompress} . methodOverride
 
 makeLogWare :: App -> IO Middleware
 makeLogWare foundation =

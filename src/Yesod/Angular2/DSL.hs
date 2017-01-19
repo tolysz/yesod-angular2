@@ -3,6 +3,12 @@ module Yesod.Angular2.DSL
  ( qq
  , (@@)
  , (@=)
+ , (@~)
+ , (@>)
+ , (@<)
+ , (@@~)
+ , (@@=)
+ , (@@~~)
  , (@->)
  , jsClass
  , addModule
@@ -36,6 +42,24 @@ Component @@ jsc = tell mempty {jscAnnot = [js|.Component(^{jsc})|]}
 
 (@=) :: Text -> JavascriptUrl url -> GJSClass url ()
 name @= jsc = tell mempty {jscProps = Map.singleton name jsc, jscInput = [name]}
+
+(@>) :: Text -> JavascriptUrl url -> GJSClass url ()
+name @> jsc = tell mempty {jscGetSet = Map.singleton name (mempty{gsGet = Just jsc})}
+
+(@<) :: Text -> JavascriptUrl url -> GJSClass url ()
+name @< jsc = tell mempty {jscGetSet = Map.singleton name (mempty{gsSet = Just jsc})}
+
+(@~) :: RawJS a => Text -> a -> GJSClass url ()
+name @~ txt = tell mempty {jscProps = Map.singleton name [js|`#{rawJS txt}`|]}
+
+(@@=) :: RawJS a => Text -> a -> GJSClass url ()
+name @@= txt = tell mempty {jscComponent = Map.singleton name [js|#{rawJS txt}|]}
+
+(@@~) :: RawJS a => Text -> a -> GJSClass url ()
+name @@~ txt = tell mempty {jscComponent = Map.singleton name [js|`#{rawJS txt}`|]}
+
+(@@~~) :: RawJS a => Text -> a -> GJSClass url ()
+name @@~~ txt = tell mempty {jscComponent = Map.singleton name [js|[`#{rawJS txt}`]|]}
 
 (@->) :: Text -> JavascriptUrl url -> GJSClass url ()
 name @-> jsc =  tell mempty {jscMethods = Map.singleton name jsc}
