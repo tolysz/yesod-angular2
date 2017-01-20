@@ -50,7 +50,8 @@ localDemo = run $ do
      addModule "ng.flexLayout.FlexLayoutModule.forRoot()"
      jsClass "AppRoot" $ do
          "names" @= "[1,2,3,4,5,6,7,8,9]"
-         bla1 ("app-root" :: Text) (renderHtml [shamlet|
+         ngSelector "app-root"
+         ngTemplate (renderHtml [shamlet|
          <div fxLayout=column fxLayoutAlign=warp>
             <div fxLayout=row fxLayoutAlign=warp>
                 <hero-lifecycle template="ngFor let name of names" [name]=name>
@@ -64,7 +65,8 @@ localDemo = run $ do
          |])
      jsClass "Shiba" $ do
           "bla" @= [qq|"test"|]
-          bla1 ("shiba" :: Text) (renderHtml [shamlet|
+          ngSelector "shiba"
+          ngTemplate (renderHtml [shamlet|
           <md-card .example-card>
             <md-card-header>
               <div md-card-avatar .example-header-image>
@@ -83,7 +85,9 @@ localDemo = run $ do
      jsClass "Hero" $ do
 
           "name" @= [qq|""|]
-          bla1 ("hero-lifecycle":: Text) (renderHtml [shamlet|
+          "inputs" @@= ([qq|['name']|] :: Text)
+          ngSelector "hero-lifecycle"
+          ngTemplate (renderHtml [shamlet|
           <h1>Hero: {{name}}
           <md-button-toggle>zombie
           <md-button-toggle>ogre
@@ -97,11 +101,11 @@ localDemo = run $ do
            }|]
 
 
-bla1 s t = Component @@ [js|{
-  selector: '#{rawJS s}',
-  template: `#{rawJS t}`,
-  inputs: ['name']
-}|]
+-- bla1 s t = Component @@ [js|{
+--   selector: '#{rawJS s}',
+--   template: `#{rawJS t}`,
+--   inputs: ['name']
+-- }|]
 
 
 commentIds :: (Text, Text, Text)
