@@ -21,6 +21,7 @@ library
                Yesod.Angular2.DSL
                Yesod.Angular2.Orphans
                Yesod.Angular2.DSL.Component
+               Language.JS
 
   build-depends: base >= 4.7 && < 5
                , text
@@ -39,6 +40,7 @@ library
                , derive
                , data-lens
                , clay
+               , attoparsec
   default-language:    Haskell2010
   default-extensions:
               TemplateHaskell

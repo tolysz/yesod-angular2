@@ -28,14 +28,16 @@ data Angular2 url = Angular2
   }
 
 data JSClass url = JSClass
-  { jscName      :: First Text
-  , jscProps     :: Map Text (JavascriptUrl url)
-  , jscMethods   :: Map Text (JavascriptUrl url)
-  , jscComponent :: Map Text (JavascriptUrl url)
-  , jscAnnot     :: JavascriptUrl url
-  , jscInput     :: [Text]
-  , jscCSS       :: Text
-  , jscGetSet    :: Map Text (GetSet url)
+  { jscName        :: First Text
+  , jscProps       :: Map Text (JavascriptUrl url)
+  , jscMethods     :: Map Text (JavascriptUrl url)
+  , jscComponent   :: Map Text (JavascriptUrl url)
+  , jscAnnot       :: JavascriptUrl url
+  , jscInput       :: [Text]
+  , jscCSS         :: Text
+  , jscGetSet      :: Map Text (GetSet url)
+  , jscHost        :: Map Text Text
+  , jscConstructor :: [Text]
   }
 
 data GetSet url = GetSet
@@ -185,8 +187,8 @@ instance Monoid (Angular2 url) where
             (mappend a5 b5)
 
 instance Monoid (JSClass url) where
-    mempty = JSClass mempty mempty mempty mempty mempty mempty mempty mempty
-    (JSClass a1 a2 a3 a4 a5 a6 a7 a8) `mappend` (JSClass b1 b2 b3 b4 b5 b6 b7 b8)
+    mempty = JSClass mempty mempty mempty mempty mempty mempty mempty mempty mempty mempty
+    (JSClass a1 a2 a3 a4 a5 a6 a7 a8 a9 a10) `mappend` (JSClass b1 b2 b3 b4 b5 b6 b7 b8 b9 b10 )
         = JSClass
             (mappend a1 b1)
             (mappend a2 b2)
@@ -196,6 +198,8 @@ instance Monoid (JSClass url) where
             (mappend a6 b6)
             (mappend a7 b7)
             (mergeMonoMap a8 b8)
+            (mappend a9 b9)
+            (mappend a10 b10)
 
 type GJSClass master = Writer (JSClass master)
 type GAngular2 master = Writer (Angular2 master)

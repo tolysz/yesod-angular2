@@ -28,8 +28,15 @@ data FileForm = FileForm
 -- The majority of the code you will write in Yesod lives in these handler
 -- functions. You can spread them across multiple files if you are so
 -- inclined, or create a single monolithic file.
+
 getHomeR :: Handler Html
-getHomeR = defaultLayout $ do
+getHomeR = do
+--  liftIO $ ngJSA ("" :: JS.JSString)
+--  liftIO $ ngJSA (ifB (true &&* false) (notB false) (false ||* true) :: JS.JSBool)
+--  liftIO $ ngJSA ((3 + 4) * 5 :: JS.JSNumber)
+--  liftIO $ ngJSA (askName)
+
+ defaultLayout $ do
    setTitle "Minimal Multifile"
    -- addScript AngJS
    toWidget localDemo

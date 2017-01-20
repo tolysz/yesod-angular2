@@ -1,4 +1,7 @@
-{-# LANGUAGE TypeSynonymInstances, FlexibleInstances, FlexibleContexts, OverloadedStrings #-}
+{-# LANGUAGE TypeSynonymInstances, FlexibleInstances
+  , FlexibleContexts, OverloadedStrings
+  , DataKinds
+   #-}
 module Yesod.Angular2.DSL
  ( qq
  , (@@)
