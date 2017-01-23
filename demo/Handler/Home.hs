@@ -52,10 +52,10 @@ getHomeR = do
    |]
 
 localDemo = run $ do
-   --   jsClass "Vilain" $ return ()
+   --   jsComponentjsClass "Vilain" $ return ()
      addModule "ng.material.MaterialModule.forRoot()"
      addModule "ng.flexLayout.FlexLayoutModule.forRoot()"
-     jsClass "AppRoot" $ do
+     jsComponent "AppRoot" $ do
          "names" @= "[1,2,3,4,5,6,7,8,9]"
          ngSelector "app-root"
          ngTemplate (renderHtml [shamlet|
@@ -70,7 +70,7 @@ localDemo = run $ do
                 <shiba>
                 <shiba>
          |])
-     jsClass "Shiba" $ do
+     jsComponent "Shiba" $ do
           "bla" @= [qq|"test"|]
           ngSelector "shiba"
           ngTemplate (renderHtml [shamlet|
@@ -89,7 +89,7 @@ localDemo = run $ do
               <button md-button>LIKE
               <button md-button>SHARE
           |])
-     jsClass "Hero" $ do
+     jsComponent "Hero" $ do
 
           "name" @= [qq|""|]
           "inputs" @@= ([qq|['name']|] :: Text)
@@ -211,7 +211,7 @@ demoApp = do
   addModule "ng.material.MdCoreModule.forRoot()"
   addModule "ng.material.MdRadioModule.forRoot()"
   addModule "ng.forms.FormsModule"
-  jsClass "DemoApp" $ do
+  jsComponent "DemoApp" $ do
       "position" @= "'before'"
       "styles"   @@~~ Clay.render (do
             ".example-tooltip-host" & do
@@ -248,7 +248,7 @@ $#               <md-option value="right">Right
       |])
 
 inputFormExample = do
-    jsClass "InputFormExample" $ do
+    jsComponent "InputFormExample" $ do
       ngSelector "input-form-example" 
       ngTemplate rawForm
 --       "template" @@~ renderHtml componentInputDemo
@@ -262,7 +262,7 @@ inputFormExample = do
 |]
 radioNgModelExample = do
     addModule "ng.forms.FormsModule"
-    jsClass "RadioNgModelExample" $ do
+    jsComponent "RadioNgModelExample" $ do
       "input" @@~ ([qtl|[favoriteSeason]|] :: Text)
       ngSelector "radio-ng-model-example"
       ngTemplate (renderHtml [shamlet|
@@ -288,7 +288,7 @@ radioNgModelExample = do
      ]|]
 selectFormExample = do
     addModule "ng.forms.FormsModule"
-    jsClass "SelectFormExample" $ do
+    jsComponent "SelectFormExample" $ do
        ngSelector "select-form-example"
        ngTemplate [qq|
 <form>
@@ -308,7 +308,7 @@ selectFormExample = do
     {value: 'tacos-2', viewValue: 'Tacos'}
   ]|]
 sliderConfigurableExample = do
-    jsClass "SliderConfigurableExample" $ do
+    jsComponent "SliderConfigurableExample" $ do
       ngSelector "slider-configurable-example"
       ngClay $ do
         ".example-h2" & margin (px 10) (px 10) (px 10) (px 10)
@@ -435,7 +435,7 @@ getCIR = defaultLayout $ do
   |]
 
 toolbarMultirowExample =
- jsClass "ToolbarMultirowExample" $ do
+ jsComponent "ToolbarMultirowExample" $ do
  ngSelector "toolbar-multirow-example"
  ngTemplate [qq|
  <md-toolbar color="primary">
@@ -460,7 +460,7 @@ toolbarMultirowExample =
 --     ".example-spacer" & "flex" "1 1 auto"
 
 sidenavFabExample =
- jsClass "MenuIconsExample" $ do
+ jsComponent "MenuIconsExample" $ do
  ngSelector "sidenav-fab-example"
  ngTemplate [qq|
 <md-sidenav-container class="example-sidenav-fab-container">
@@ -524,7 +524,7 @@ sidenavFabExample =
 }
  |]
 menuIconsExample = do
-  jsClass "MenuIconsExample" $ do
+  jsComponent "MenuIconsExample" $ do
   ngSelector "menu-icons-example"
   ngTemplate [qq|
 <button md-icon-button [mdMenuTriggerFor]="menu">
@@ -552,7 +552,7 @@ appComponent = do
   addModule "ng.material.MdCoreModule.forRoot()"
   addModule "ng.material.MdRadioModule.forRoot()"
 
-  jsClass "SelectFormExample" $ do
+  jsComponent "SelectFormExample" $ do
      "title" @= "'Tour of Heroes'"
      "selectedHero" @="null"
      "onSelect" @-> [js|function(hero){
@@ -764,7 +764,7 @@ nav a.active {
 
 
 myZippy = do
-   jsClass "ZippyComponent" $ do
+   jsComponent "ZippyComponent" $ do
       ngSelector "my-zippy"
       "input" @@= ([qq|["title"]|] :: Text)
       "name" @= [qq|""|]
@@ -792,5 +792,5 @@ getSliderR = defaultLayout $ do
     addModule "ng.material.MdRadioModule.forRoot()"
     sliderConfigurableExample
   toWidget [whamlet|
-         <slider-configurable-exampl> Loading...
+         <slider-configurable-example> Loading...
       |]

@@ -39,6 +39,8 @@ $newline never
     <script type="text/javascript" src="https://unpkg.com/@angular/flex-layout/bundles/flex-layout.umd.js">
 
   <body>
+    <script>
+      document.write('<base href="' + document.location + '" />');
     ^{pageBody pc}
 
     $maybe analytics <- appAnalytics $ appSettings master

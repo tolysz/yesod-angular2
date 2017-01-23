@@ -1,6 +1,6 @@
 {-# LANGUAGE TypeSynonymInstances, FlexibleInstances
   , FlexibleContexts, OverloadedStrings
-  , DataKinds
+  , DataKinds, LambdaCase
    #-}
 module Yesod.Angular2.DSL
  ( qq
@@ -14,6 +14,7 @@ module Yesod.Angular2.DSL
  , (@@~~)
  , (@->)
  , jsClass
+ , jsComponent
  , addModule
  , run
  , bla
@@ -24,6 +25,10 @@ module Yesod.Angular2.DSL
  , js
  , demo
  , Decorator(..)
+ , Route(..)
+ , ngImport
+ , ngImports
+ , ngRoute
  )
 where
 
@@ -72,11 +77,14 @@ name @@~~ txt = tell mempty {jscComponent = Map.singleton name [js|[`#{rawJS txt
 (@->) :: Text -> JavascriptUrl url -> GJSClass url ()
 name @-> jsc =  tell mempty {jscMethods = Map.singleton name jsc}
 
-jsClass :: Text -> GJSClass url () -> GAngular2 url ()
-jsClass name cl = tell mempty { ngExportsClass = [ execWriter $ do
-                   tell mempty {jscName = First (Just name)}
-                   cl
-              ] }
+jsClass :: Text -> Text -> GJSClass url () -> GAngular2 url ()
+jsClass tp name cl = tell mempty { ngExportsClass = [ execWriter $ do
+                      tell mempty {jscName = First (Just name), jscType = First (Just tp)}
+                      cl
+                   ] }
+
+jsComponent = jsClass "Component"
+
 addModule :: Text -> GAngular2 url ()
 addModule m = tell mempty { ngModules = [m] }
 
@@ -113,11 +121,14 @@ run = renderApp . execWriter
 demo = run $ do
 --   jsClass "Vilain" $ return ()
   addModule "ng.material.MaterialModule.forRoot()"
-  jsClass "Hero" $ do
+  jsComponent "Hero" $ do
        "bla" @= [qq|"test"|]
        "ola" @= "{}"
        bla
        "ngOnInit" @-> [js|function() {setTimeout(() => this.name = 'Windstorm', 0);}|]
+
+ngRoute :: Route url -> GAngular2 url ()
+ngRoute r = tell mempty {ngRoutes = [r]}
 
 ngSelector :: TL.Text -> GJSClass url ()
 ngSelector s = "selector" @@~ s
@@ -130,3 +141,18 @@ ngStyles t = "styles" @@~~ t
 
 ngClay :: Clay.Css -> GJSClass url ()
 ngClay = ("styles" @@~~) . Clay.render
+
+ngImport :: Text -> String -> GAngular2 url ()
+ngImport k i =
+  let
+    imp = case i of
+       "@angular/platform-browser-dynamic" -> "ng.platformBrowserDynamic" :: Text
+       "@angular/common"                   -> "ng.common"
+       "@angular/core"                     -> "ng.core"
+       u                                   -> T.pack u
+--                                       -> "ng.forms"
+--                                       -> "ng.material"
+  in
+  tell mempty { modAnnot = [js|var #{rawJS k} = #{rawJS imp}.#{rawJS k};|] }
+
+ngImports ks = mconcat $ Prelude.map ngImport ks

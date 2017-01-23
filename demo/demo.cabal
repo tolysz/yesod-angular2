@@ -22,6 +22,7 @@ library
                      Handler.Common
                      Handler.Home
                      Handler.Comment
+                     Handler.Backup
 
     if flag(dev) || flag(library-only)
         cpp-options:   -DDEVELOPMENT

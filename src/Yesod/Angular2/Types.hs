@@ -38,6 +38,7 @@ data JSClass url = JSClass
   , jscGetSet      :: Map Text (GetSet url)
   , jscHost        :: Map Text Text
   , jscConstructor :: [Text]
+  , jscType        :: First Text
   }
 
 data GetSet url = GetSet
@@ -114,6 +115,7 @@ instance ComponentName (JSClass url) where
 
 renderApp :: Angular2 url -> JavascriptUrl url
 renderApp Angular2{..} = [js|(function(app) {
+^{modAnnot}
 ^{routeDefs}
 ^{exportDefs}
 ng.core.enableProdMode();
@@ -127,7 +129,6 @@ app.AppModule =
       constructor: function() {
       }
     });
-^{modAnnot2}
   document.addEventListener('DOMContentLoaded', function() {
     ng.platformBrowserDynamic
       .platformBrowserDynamic()
@@ -142,7 +143,7 @@ app.AppModule =
   components1 = mintersperse "," $ map cName $ take 1 ngExportsClass
   components = mintersperse "," $ map cName ngExportsClass
   ngModulesM = mintersperse "," $ map (\m -> [js|#{rawJS m}|]) ("ng.platformBrowser.BrowserModule":ngModules ++ ["ng.router.RouterModule.forRoot(appRoutes)"| DL.length ngRoutes > 0])
-  modAnnot2 = ""
+--   modAnnot2 = ""
 --    mconcat $ map (\cl -> mconcat $ map (\i -> [js|ng.core.Input('#{rawJS i}', app.#{rawJS (jscName cl)});|]) $ jscInput cl) ngExportsClass
   appName = case ngName of
     First (Just a) -> a
@@ -154,7 +155,7 @@ btToLines x = mintersperse "+\n" $ map (\l -> T.pack $ show (l <> "\n")) $ T.lin
 renderJSUrl :: JSClass url -> JavascriptUrl url
 renderJSUrl cl@JSClass{..} = [js|
 ^{cName cl} = ng.core
-.Component({^{jscComponentM}})
+.#{rawJS jscType}({^{jscComponentM}})
 .Class({^{annotM}});^{settersM}|]
    where
      className = [js|#{rawJS jscName}|]
@@ -187,8 +188,8 @@ instance Monoid (Angular2 url) where
             (mappend a5 b5)
 
 instance Monoid (JSClass url) where
-    mempty = JSClass mempty mempty mempty mempty mempty mempty mempty mempty mempty mempty
-    (JSClass a1 a2 a3 a4 a5 a6 a7 a8 a9 a10) `mappend` (JSClass b1 b2 b3 b4 b5 b6 b7 b8 b9 b10 )
+    mempty = JSClass mempty mempty mempty mempty mempty mempty mempty mempty mempty mempty mempty
+    (JSClass a1 a2 a3 a4 a5 a6 a7 a8 a9 a10 a11) `mappend` (JSClass b1 b2 b3 b4 b5 b6 b7 b8 b9 b10 b11)
         = JSClass
             (mappend a1 b1)
             (mappend a2 b2)
@@ -200,6 +201,7 @@ instance Monoid (JSClass url) where
             (mergeMonoMap a8 b8)
             (mappend a9 b9)
             (mappend a10 b10)
+            (mappend a11 b11)
 
 type GJSClass master = Writer (JSClass master)
 type GAngular2 master = Writer (Angular2 master)
