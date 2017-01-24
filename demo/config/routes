@@ -11,5 +11,5 @@
 /hero HeroR GET
 
 /slider SliderR GET
-/backup BackupR GET
+!/backup/*Texts BackupR GET
 

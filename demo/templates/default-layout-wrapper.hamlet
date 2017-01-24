@@ -6,6 +6,7 @@ $newline never
 \<!--[if gt IE 8]><!-->
 <html class="no-js" lang="en"> <!--<![endif]-->
   <head>
+    <base href="/backup" >
     <meta charset="UTF-8">
 
     <title>#{pageTitle pc}
@@ -26,21 +27,21 @@ $newline never
     <script type="text/javascript" src="https://unpkg.com/zone.js@0.7.4/dist/zone.js">
     <script type="text/javascript" src="https://unpkg.com/reflect-metadata/Reflect.js">
     <script type="text/javascript" src="https://unpkg.com/rxjs/bundles/Rx.js">
+
     <script type="text/javascript" src="https://unpkg.com/@angular/core#{ngTag}/bundles/core.umd.js">
     <script type="text/javascript" src="https://unpkg.com/@angular/common#{ngTag}/bundles/common.umd.js">
     <script type="text/javascript" src="https://unpkg.com/@angular/compiler#{ngTag}/bundles/compiler.umd.js">
     $# <script type="text/javascript" src="https://unpkg.com/@angular/compiler-cli#{ngTag}/bundles/compiler-cli.umd.js">
-    <script type="text/javascript" src="https://unpkg.com/@angular/http#{ngTag}/bundles/http.umd.js">
     <script type="text/javascript" src="https://unpkg.com/@angular/forms#{ngTag}/bundles/forms.umd.js">
     <script type="text/javascript" src="https://unpkg.com/@angular/platform-browser#{ngTag}/bundles/platform-browser.umd.js">
     <script type="text/javascript" src="https://unpkg.com/@angular/platform-browser-dynamic#{ngTag}/bundles/platform-browser-dynamic.umd.js">
+    <script type="text/javascript" src="https://unpkg.com/@angular/http#{ngTag}/bundles/http.umd.js">
     <script type="text/javascript" src="https://unpkg.com/@angular/router#{ngTag}/bundles/router.umd.js">
     <script type="text/javascript" src="https://rawgit.com/angular/material2-builds/master/bundles/material.umd.js">
     <script type="text/javascript" src="https://unpkg.com/@angular/flex-layout/bundles/flex-layout.umd.js">
 
   <body>
     <script>
-      document.write('<base href="' + document.location + '" />');
     ^{pageBody pc}
 
     $maybe analytics <- appAnalytics $ appSettings master

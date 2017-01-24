@@ -14,6 +14,7 @@ import qualified Data.Map.Strict as Map
 import qualified Data.Map.Merge.Strict as Map
 import Text.Julius
 import Text.Lucius
+import Language.JS
 import Data.Coerce
 import Data.Maybe
 import Yesod.Angular2.Orphans
@@ -55,7 +56,8 @@ instance Monoid (GetSet url) where
 data Route url = Route
   { routePath       :: Maybe Text
   , routePathMatch  :: Maybe Text
-  , routeComponent  :: Maybe ComponentNamable
+  , routeComponent  :: Maybe Text
+--   , routeComponent  :: Maybe ComponentNamable
   , routeRedirectTo :: Maybe Text
   , routeChildren   :: [Route url]
   , routeData       :: Maybe (JavascriptUrl url)
@@ -87,17 +89,22 @@ renderRoute :: Route url -> JavascriptUrl url
 renderRoute r@Route{..}= [js|{^{body}}|]
  where
   body = mintersperse "," $ mconcat
-      [ [[js|path = '#{rawJS (fromJust routePath)}'|]             | isJust routePath]
-      , [[js|component = ^{cName (fromJust routeComponent)}|]     | isJust routeComponent]
-      , [[js|data = ^{fromJust routeData}|]                       | isJust routeData]
-      , [[js|redirectTo = '#{rawJS (fromJust routeRedirectTo)}'|] | isJust routeRedirectTo]
-      , [[js|pathMatch = '#{rawJS (fromJust routePathMatch)}'|]   | isJust routePathMatch]
-      , [[js|children = [^((mintersperse "," $ map renderRoute $ DL.filter isNonNullRoute routeChildren))]|] | not (DL.null routeChildren)]
+      [ [[js|path: '#{rawJS (fromJust routePath)}'|]             | isJust routePath]
+      , [[js|component: ^{cName (fromJust routeComponent)}|]     | isJust routeComponent]
+      , [[js|data: ^{fromJust routeData}|]                       | isJust routeData]
+      , [[js|redirectTo: '#{rawJS (fromJust routeRedirectTo)}'|] | isJust routeRedirectTo]
+      , [[js|pathMatch: '#{rawJS (fromJust routePathMatch)}'|]   | isJust routePathMatch]
+      , [[js|children: [^((mintersperse "," $ map renderRoute $ DL.filter isNonNullRoute routeChildren))]|] | not (DL.null routeChildren)]
       ]
 
 class ComponentName x where
  cName :: x -> JavascriptUrl url
  cNull :: x -> Bool
+
+instance ComponentName Text where
+ cName x = [js|app.#{rawJS x}|]
+ cNull = T.null
+
 
 instance ComponentName ComponentNamable where
  cName (MkComponentNamable cn) = cName cn
@@ -116,9 +123,9 @@ instance ComponentName (JSClass url) where
 renderApp :: Angular2 url -> JavascriptUrl url
 renderApp Angular2{..} = [js|(function(app) {
 ^{modAnnot}
-^{routeDefs}
 ^{exportDefs}
-ng.core.enableProdMode();
+// ng.core.enableProdMode();
+^{routeDefs}
 app.AppModule =
     ng.core.NgModule({
       imports: [ ^{ngModulesM} ],
@@ -159,7 +166,9 @@ renderJSUrl cl@JSClass{..} = [js|
 .Class({^{annotM}});^{settersM}|]
    where
      className = [js|#{rawJS jscName}|]
-     annotM = mintersperse ",\n " $ [js|constructor: function ^{className}(){^{jscPropsM}}|] : jscMethodsM
+     annotM
+       | null jscConstructor = mintersperse ",\n " $ [js|constructor: function ^{className}(){^{jscPropsM}}|] : jscMethodsM
+       | otherwise           = mintersperse ",\n " $ [js|constructor: #{rawJS (TL.init $ TL.init $ diTransform $ TL.fromStrict $ head jscConstructor)}; ^{jscPropsM}}]|] : jscMethodsM
      jscPropsM = mconcat $ map (\(n,jsc) ->[js|
       this.#{rawJS n} = ^{jsc};|]) $ Map.toList jscProps
      jscMethodsM = map (\(n,jsc) -> [js|#{rawJS n} : ^{jsc}|]) $ Map.toList jscMethods

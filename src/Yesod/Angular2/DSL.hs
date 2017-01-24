@@ -22,6 +22,7 @@ module Yesod.Angular2.DSL
  , ngTemplate
  , ngStyles
  , ngClay
+ , ngCtor
  , js
  , demo
  , Decorator(..)
@@ -127,6 +128,9 @@ demo = run $ do
        bla
        "ngOnInit" @-> [js|function() {setTimeout(() => this.name = 'Windstorm', 0);}|]
 
+ngCtor :: Text -> GJSClass url ()
+ngCtor c = tell mempty {jscConstructor = [c]}
+
 ngRoute :: Route url -> GAngular2 url ()
 ngRoute r = tell mempty {ngRoutes = [r]}
 
@@ -149,6 +153,8 @@ ngImport k i =
        "@angular/platform-browser-dynamic" -> "ng.platformBrowserDynamic" :: Text
        "@angular/common"                   -> "ng.common"
        "@angular/core"                     -> "ng.core"
+       "@angular/http"                     -> "ng.http"
+--        rxjs/Observable
        u                                   -> T.pack u
 --                                       -> "ng.forms"
 --                                       -> "ng.material"
