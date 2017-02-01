@@ -1,35 +1,35 @@
 -- {-# Language OverloadedRecordFields #-}
 {-# LANGUAGE TemplateHaskell #-}
 module Yesod.Angular2.DSL.Component where
-
-import Text.Julius
-import Data.Text
-import Data.DeriveTH
-import Data.Lens.Common
-import Data.Maybe
-
-data Component url = Component
-  { animations      :: Maybe (JavascriptUrl url)
-  , changeDetection :: Maybe (JavascriptUrl url)
-  , encapsulation   :: Maybe (JavascriptUrl url)
-  , entryComponents :: Maybe (JavascriptUrl url)
-  , exportAs        :: Maybe (JavascriptUrl url)
-  , host            :: Maybe (JavascriptUrl url)
-  , inputs          :: [Text]
-  , outputs         :: [Text]
-  , interpolation   :: Maybe (JavascriptUrl url)
-  , moduleId        :: Maybe (JavascriptUrl url)
-  , providers       :: Maybe (JavascriptUrl url)
-  , queries         :: Maybe (JavascriptUrl url)
-  , selector        :: Maybe (JavascriptUrl url)
-  , styleUrls       :: Maybe (JavascriptUrl url)
-  , styles          :: [Text]
-  , template        :: Maybe (JavascriptUrl url)
-  , templateUrl     :: Maybe (JavascriptUrl url)
-  , viewProviders   :: Maybe (JavascriptUrl url)
-  }
-
-derives [makeLens, makeMonoid] [''Component]
+--
+-- import Text.Julius
+-- import Data.Text
+-- import Data.DeriveTH
+-- import Data.Lens.Common
+-- import Data.Maybe
+--
+-- data Component url = Component
+--   { animations      :: Maybe (JavascriptUrl url)
+--   , changeDetection :: Maybe (JavascriptUrl url)
+--   , encapsulation   :: Maybe (JavascriptUrl url)
+--   , entryComponents :: Maybe (JavascriptUrl url)
+--   , exportAs        :: Maybe (JavascriptUrl url)
+--   , host            :: Maybe (JavascriptUrl url)
+--   , inputs          :: [Text]
+--   , outputs         :: [Text]
+--   , interpolation   :: Maybe (JavascriptUrl url)
+--   , moduleId        :: Maybe (JavascriptUrl url)
+--   , providers       :: Maybe (JavascriptUrl url)
+--   , queries         :: Maybe (JavascriptUrl url)
+--   , selector        :: Maybe (JavascriptUrl url)
+--   , styleUrls       :: Maybe (JavascriptUrl url)
+--   , styles          :: [Text]
+--   , template        :: Maybe (JavascriptUrl url)
+--   , templateUrl     :: Maybe (JavascriptUrl url)
+--   , viewProviders   :: Maybe (JavascriptUrl url)
+--   }
+--
+-- derives [makeLens, makeMonoid] [''Component]
 
 {-
 animations      - list of animations of this component

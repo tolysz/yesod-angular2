@@ -6,7 +6,7 @@ packages:
 extra-deps:
 - rawstring-qm-0.2.3.0
 - data-lens-2.11.1
-- containers-0.5.9.1
+#- containers-0.5.9.1
 
 flags: {}
 extra-package-dbs: []

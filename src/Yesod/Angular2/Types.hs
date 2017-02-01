@@ -11,7 +11,7 @@ import qualified Data.Text as T
 import qualified Data.Text.Lazy as TL
 import Data.Map.Strict (Map)
 import qualified Data.Map.Strict as Map
-import qualified Data.Map.Merge.Strict as Map
+-- import qualified Data.Map.Merge.Strict as Map
 import Text.Julius
 import Text.Lucius
 import Language.JS
@@ -218,4 +218,5 @@ type GRoute master = Writer (Route master)
 
 
 mergeMonoMap :: Monoid v => Map Text v -> Map Text v -> Map Text v
-mergeMonoMap = Map.merge Map.preserveMissing Map.preserveMissing (Map.zipWithMatched (\_ x y -> x `mappend` y))
+mergeMonoMap = Map.unionWith mappend
+-- Map.merge Map.preserveMissing Map.preserveMissing (Map.zipWithMatched (\_ x y -> x `mappend` y))
